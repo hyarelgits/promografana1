@@ -1,0 +1,23 @@
+vagrant init centos/7
+
+vagrant up
+
+vagrant ssh
+
+sudo passwd 
+
+su
+
+
+vagrant box list
+            add
+            prune
+            remove
+
+ vagrant up
+   31  vagrant box-list
+   32  vagrant box list
+   33  vagrant box remove centos/7
+   34  vagrant box remove ubuntu/focal64
+
+https://portal.cloud.hashicorp.com/vagrant/discover
