@@ -1,0 +1,96 @@
+1860
+9964
+
+
+https://github.com/dockersamples/docker-swarm-visualizer
+
+https://github.com/dockersamples/docker-swarm-visualizer
+
+docker service create \
+  --name=viz \
+  --publish=8090:8090/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  dockersamples/visualizer
+
+
+
+
+
+nano docker-compose.yml 
+   50  docker-compose up 
+   51  nano docker-compose.yml 
+   52  docker-compose rm
+   53  docker-compose kill
+   54  docker-compose up 
+   55  clear
+   56  docker swarm init
+   57  docker node ls
+   58  docker node inspect   k8sworker1.example.net  |less
+   59  docker node inspect   k8sworker1.example.net  | less
+   60  docker node inspect k8sworker1.example.net  | less
+   61  docker node demote k8sworker1.example.net
+   62  docker node demote k8sworker1.example.net down
+   63  docker service create hyareldocker1/petshop:latest
+   64  docker container ls -a
+   65  docker container attach 1c
+   66  docker container attach 4b
+   67  docker service ls
+   68  docker service rm lw
+   69  docker service ls
+   70  docker container ls -a
+   71  docker sytem prune -a
+   72  docker sytem prune 
+   73  docker system prune 
+   74  dockedocker service create -d --replicas nginx 
+   75  docker service create -d --replicas nginx 
+   76  docker service create -d --replicas 10 nginx 
+   77  docker service ls
+   78  $ docker run -it -d -p 8090:8090 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
+   79  docker run -it -d -p 8090:8090 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
+   80  docker service create   --name=viz   --publish=8090:8090/tcp   --constraint=node.role==manager   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock   dockersamples/visualizer
+   81  ifconfig 
+   82  docker container ls -a
+   83  systemctl disable jenkins.service
+   84  systemctl stop jenkins.service
+   85  docker container stop 69
+   86  docker container stop c3
+   87  docker container rm  c3
+   88  docker container rm 69
+   89  $ docker run -it -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
+   90  docker run -it -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
+   91  $ docker service create   --name=viz   --publish=8080:8080/tcp   --constraint=node.role==manager   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock   dockersamples/visualizer
+   92  docker service create   --name=viz   --publish=8080:8080/tcp   --constraint=node.role==manager   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock   dockersamples/visualizer
+   93  docker service ls
+   94  docker service rm hf
+   95  docker service create   --name=viz   --publish=8080:8080/tcp   --constraint=node.role==manager   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock   dockersamples/visualizer
+   96  docker service create --replicas=3 --constraint= "node.role==manager" 
+   97  docker service create --replicas=3 --constraint="node.role==manager" 
+   98  docker service create --replicas=3 --constraint="node.role==manager" nginx
+   99  docker service ls
+  100  docker service rm kj
+  101  docker service ls
+  102  docker service create --replicas=9 --constraint="node.role==worker" nginx
+  103  docker node update --help | grep label
+  104  docker node update --lable-add="ssd=true" worker
+  105  docker node ls
+  106  docker node update --lable-add="ssd=true" k8sworker1.example.net
+  107  docker node update --label-add="ssd=true" k8sworker1.example.net
+  108  docker node update --label-add="ssd=true" master
+  109  docker node update --label-add="ssd=true" k8smaster.example.net
+  110  dockerservice create --constraint="node.label.ssd=true" --replicase=3 -d alpine 
+  111  docker service create --constraint="node.label.ssd=true" --replicase=3 -d alpine 
+  112  docker service create --constraint="node.label.ssd=true" --replicas=3 -d alpine 
+  113  docker service create --constraint="node.label.ssd=true" --replicas=3 alpine 
+  114  docker node ls
+  115  docker node rm 8hjk3kc19mr4mebp6supr24u6
+  116  docker node ls
+  117  docker node update --avialiability=pause k8sworker1.example.net
+  118  docker node update --help |  grep avialiabilty
+  119  docker node update --help |  grep avi
+  120  docker node update --help |  grep avail
+  121  docker node update --availability=pause k8sworker1.example.net
+  122  docker node ls
+  123  docker node update --availability=active k8sworker1.example.net
+  124  docker node ls
+  125  history 

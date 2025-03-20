@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: label-demo
+  labels:
+    environment: production
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
+kubectl get pods --show-labels
+kubectl label pods label-demo owner=hyarel
+kubectl label pods label-demo owner=devops --overwrite
+ kubectl get pods --selector owner=devops
+
+ kubectl expose pod label-demo --port=8000 --target-port=80 --name myweb1
+ kubectl get svc
+ curl 10.105.201.91
+ kubectl get pods --show-labels
+kubectl get pods --show-labels
+ kubectl describe svc myweb1 
+
+kubectl label pod label-demo1 type=nginx
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hyarelpod1
+  labels: 
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+
+
+kubectl get pods
+   56  kubectl exec hyarelpod1 -it /bin/bash
+   57  nano pod2.yaml
+
+Expose pod 
+
+kubectl expose pod hyarelpod1 --port=8000 --target-port=80 --name myweb
+   61  kubectl get svc
+   62  curl 10.104.119.25
+   63  kubectl get pods --show-labels
+   64  kubectl get svc myweb
+   65  kubectl describe  svc myweb
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hyarelpod2
+  labels: 
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+
+3  kubectl get pods --show-labels
+   64  kubectl get svc myweb
+   65  kubectl describe  svc myweb
+
+
+Endpoints:         172.16.185.199:80,172.16.185.200:80
+
+
+kubectl label pod hyarelpod2 app=mginx
+
+
+
+
+
+
+
+
+
+
+
+
+

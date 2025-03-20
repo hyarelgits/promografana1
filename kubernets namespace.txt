@@ -1,0 +1,75 @@
+Namespaces
+Using namespaces allows you to split complex systems with numerous components into smaller distinct groups.
+
+They can also be used for separating resources in a multi-tenant environment, splitting up resources into production, development, 
+and QA environments, or in any other way you may need.
+
+
+kubectl get ns
+
+kubectl get pods --namespace kube-system
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+
+
+kubectl create namespace my-namespace
+
+
+kubectl get pods --namespace=dev
+
+
+kubectl run nginx --image=nginx --dry-run=client -o yaml
+
+
+kubectl create deployment --image=nginx nginx
+
+kubectl get deployment
+kubectl create deployment --image=nginx nginx --dry-run -o yaml
+
+kubectl create deployment nginx --image=nginx --replicas=4
+
+kubectl get deployment
+
+kubectl scale deployment nginx --replicas=10
+  107  kubectl get deployment
+  108  history
+
+
+kubectl create namespace test-123 --dry-run -o json
+ kubectl create namespace test-123 --dry-run -o yaml
+
+
+kubectl create namespace your-namespace
+ kubectl apply -f  your_config.yaml --namespace=your-namespace
+
+
+
+
+piVersion: v1
+kind: Pod
+metadata:
+  name: hyarelpod2
+  labels: 
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+
+kubectl apply -f pod2.yaml  --namespace dev
+
+
+kubectl get pods --namespace dev
+
+kubectl get pods
+
+
+
+
+
+
+
+

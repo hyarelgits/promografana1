@@ -1,0 +1,52 @@
+Deployments
+A deployment in Kubernetes is a method of managing and scaling applications.
+
+It allows you to define the desired state of your application, including the number of replicas of your application that should be running, and the specific configuration of your containers.
+
+Kubernetes then automatically manages the deployment, ensuring that the desired state is maintained even in the face of failures or changes in demand.
+
+For example, let’s say you have a web application that you want to run on a Kubernetes cluster. You could create a deployment that specifies that you want three replicas of your application to be running at all times and that each replica should be based on a specific Docker image.
+
+The deployment would then ensure that three instances of your application are running and available to handle incoming requests, and would automatically replace any instances that fail.
+
+Additionally, if you wanted to update your application to a new version, you could simply update the Docker image in your deployment and Kubernetes would automatically roll out the update to all of your replicas(we will talk about the rollout, rollback, and update ), ensuring that your application stays up and running.
+
+Creating a Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-app-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: my-web-app
+  template:
+    metadata:
+      labels:
+        app: my-web-app
+    spec:
+      containers:
+      - name: my-web-app
+        image: my-web-app:v1.0
+        ports:
+        - containerPort: 80
+
+
+
+kubectl create my-web-app-deployment.yaml
+you can now view the deployments by running the command
+
+kubectl get deployments 
+
+
+
+
+Scalability: Deployments make it easy to scale up or down the number of replicas of your application based on changing demand,
+ensuring that your application remains available and responsive to users.
+Resilience: Deployments ensure that your application is resilient to failures by automatically replacing any containers that fail,
+ keeping your application up and running even in the face of hardware or network failures.
+Easy updates: Deployments allow you to easily roll out updates to your application by simply updating the Docker image in your deployment,
+ without having to manually update each individual container.
+Rollback: In case of an issue with a new update, you can easily revert to a previous version by rolling back your deployment to a previous revision,
+ preserving the stability and reliability of your application.

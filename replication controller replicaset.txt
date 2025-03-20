@@ -1,0 +1,89 @@
+A Replication Controller is one of the older controllers in Kubernetes
+ and is responsible for maintaining a specified number of replicas for a pod.
+ It uses the replicas field to define the desired number of identical pod replicas.
+
+nano replicationcontroller.yaml
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: my-replication-controller
+spec:
+  replicas: 3
+  selector:
+    app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: my-image
+
+In this example, the Replication Controller ensures that three replicas of the pod with the label app: my-app are running
+
+kubectl apply -f replicationcontroller.yaml 
+   81  kubectl get pods
+   82  kubectl get pods --show-labels
+   83  kubectl delete pod my-replication-controller-69tb5
+   84  kubectl get pods
+kubectl get replicationcontroller
+   87  kubectl delete replicationcontroller my-replication-controller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A ReplicaSet is an evolution of the Replication Controller with additional features. 
+It allows more expressive pod selectors using the matchExpressions field, enabling set-based label selection.
+
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - {key: app, operator: In, values: [my-app]}
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: my-image
+
+
+
+n this example, the ReplicaSet uses a set-based selector, specifying that the pod’s app label should have the value "my-app."
+
+Key Differences:
+Selector Flexibility:
+
+Replication Controller uses equality-based selectors.
+ReplicaSet introduces set-based selectors with more flexibility.
+Label Matching:
+
+Replication Controller uses matchLabels for label matching.
+ReplicaSet uses matchExpressions for advanced label matching.
+Updates and Rollbacks:
+
+ReplicaSet provides more advanced updating strategies and supports rollbacks.
+Replication Controller has limited updating capabilities.
+Replacement for Replication Controller:
+
+ReplicaSet is the recommended choice over Replication Controller in modern Kubernetes deployments.
