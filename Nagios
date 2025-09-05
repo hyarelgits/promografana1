@@ -93,3 +93,97 @@ make install-init
 
 
 
+vi /usr/local/nagios/etc/objects/localhost.cfg
+
+
+vim /usr/local/nagios/etc/nrpe.cfg
+
+
+
+
+
+  yum install -y gcc glibc glibc-common openssl openssl-devel
+    2  wget https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.1.0/nrpe-4.1.0.tar.gz -P /tmp/
+    3  tar zxvf nrpe-4.1.0.tar.gz
+    4  tar xvf nrpe-4.1.0.tar.gz
+    5  ls
+    6  cd /tmp
+    7  tar zxvf nrpe-4.1.0.tar.gz
+    8  cd nrpe-4.1.0
+    9  ./configure --enable-command-args --with-nrpe-user=nagios --with-nrpe-group=nagios
+   10  make install-groups-users
+   11  make all
+   12  make install
+   13  make install-config
+   14  make install-init
+   15  firewall-cmd --add-port=5666/tcp --permanent
+   16  firewall-cmd --reload
+   17  iptables -I INPUT -p tcp --dport 5666 -j ACCEPT
+   18  iptables-save > /etc/sysconfig/iptables
+   19  systemctl start nrpe
+   20  systemctl enable nrpe
+   21  vim /usr/local/nagios/etc/nrpe.cfg
+   22  systemctl restart nrpe
+   23  /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1
+   24  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   25  /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1 -c check_total_procs
+   26  USERS OK - 2 users currently logged in |users=2;5;10;0
+   27  /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1 -c check_users
+   28  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.132
+   29  setenforce 0
+   30  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.132
+   31  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   32  command[check_root_disk]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p /
+   33  check_nrpe -H 192.168.11.132
+   34  check_nrpe -H 192.168.11.131
+   35  yum install epel-release -y
+   36  check_nrpe -H 192.168.11.132
+   37  vi /etc/sysconfig/iptables
+   38  service iptables restart
+   39  systemctl restart iptables.service
+   40  /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1
+   41  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   42  ping 192.168.11.131
+   43  vim /usr/local/nagios/etc/nrpe.cfg
+   44  systemctl restart nrpe
+   45  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   46  vim /usr/local/nagios/etc/nrpe.cfg
+   47  systemctl restart nrpe
+   48  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   49  cd /usr/local/nagios/libexec/
+   50  ./check_
+   51  ./check_nrpe 
+   52  ./check_nrpe -H 192.168.11.131
+   53  vim /usr/local/nagios/etc/nrpe.cfg
+   54  systemctl restart nrpe
+   55  /usr/local/nagios/libexec/check_nrpe -H 192.168.11.131
+   56  getenforce
+   57  getenforce 1
+   58  getenforce
+   59  getenforce 0
+   60  getenforce
+   61  ~]~ getenforce
+   62  getenforce
+   63  getenforce 0
+   64  reboot
+   65  getenforce
+   66  getenforce 1
+   67  reboot
+   68  systemctl restart httpd
+   69  systemctl restart nagios
+   70  vim /usr/local/nagios/etc/nrpe.cfg
+   71  history
+   72  vi /usr/local/nagios/etc/objects/localhost.cfg 
+   73  systemctl restart nagios
+   74  vi /usr/local/nagios/etc/objects/localhost.cfg 
+   75  systemctl restart nagios
+   76  clear
+   77  vi /usr/local/nagios/etc/objects/localhost.cfg 
+   78  history
+[root@localhost ~]# 
+
+
+
+
+
+
