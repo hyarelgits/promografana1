@@ -40,7 +40,7 @@ net.ipv4.ip_forward = 1
  sudo apt update
  sudo apt install -y kubelet kubeadm kubectl
  sudo apt-mark hold kubelet kubeadm kubectl
-
+kubeadm init
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml
@@ -52,6 +52,7 @@ kubectl get pods -n kube-system
 kubectl get nodes
 
  
+
 
 
 
