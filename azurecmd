@@ -20,6 +20,33 @@ powerwhell
 New-AzResourceGroup -Name 'myResourceGroup' -Location 'eastus'
 
 
+
+ New-AzVm `
+ -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
+ -Name 'myPSVM' `
+ -Location 'East US' `
+ -Image 'Win2019Datacenter' `
+ -Zone '1' `
+ -Size 'Standard_D2s_v3' `
+ -Credential (Get-Credential)
+
+
+ Get-AzVM `
+ -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
+ -Status
+
+
+ Stop-AzVM `
+ -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
+ -Name 'myPSVM' 
+
+  Remove-AzVM `
+>>  -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
+>>  -Name 'myPSVM' 
+
+
+
+
 New-AzVm `
     -ResourceGroupName 'myResourceGroup' `
     -Name 'myVM' `
