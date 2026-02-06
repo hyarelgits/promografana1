@@ -9,7 +9,7 @@ username="azureuser"
 az vm create \
     --resource-group $resourcegroup \
     --name $vmname \
-    --image Win2022AzureEditionCore \
+    --image Windows Server 2022 Datacenter - x64 Gen1 \
     --public-ip-sku Standard \
     --admin-username $username 
 
