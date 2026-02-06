@@ -41,8 +41,8 @@ New-AzResourceGroup -Name 'myResourceGroup' -Location 'eastus'
  -Name 'myPSVM' 
 
   Remove-AzVM `
->>  -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
->>  -Name 'myPSVM' 
+  -ResourceGroupName 'rg-azuser2901_mml.local-SWZfe' `
+  -Name 'myPSVM' 
 
 
 
