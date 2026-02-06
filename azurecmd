@@ -57,3 +57,65 @@ New-AzVm `
     -SecurityGroupName 'myNetworkSecurityGroup' `
     -PublicIpAddressName 'myPublicIpAddress' `
     -OpenPorts 80,3389
+
+
+
+
+
+
+
+
+
+Disk
+
+az group show --resource-group rg-azuser2901_mml.local-SWZfe
+
+DISKNAME='az104-03d-disk1'
+
+
+az disk create --resource-group rg-azuser2901_mml.local-SWZfe --name MyDisk --size-gb 256 --max-shares 2 --location eastus
+
+
+az disk show --name MyDisk --resource-group rg-azuser2901_mml.local-SWZfe
+
+az disk update --name MyDisk --resource-group rg-azuser2901_mml.local-SWZfe --size-gb 20
+
+az disk show --name MyDisk --resource-group rg-azuser2901_mml.local-SWZfe --query sku
+
+ az disk delete --name MyDisk --resource-group rg-azuser2901_mml.local-SWZfe
+
+
+
+
+
+az storage account create --name hyarel7 --resource-group rg-azuser2901_mml.local-SWZfe --location westus --sku Standard_LRS
+
+az storage account show --resource-group rg-azuser2901_mml.local-SWZfe --name hyarel7
+
+az storage account delete --resource-group rg-azuser2901_mml.local-SWZfe --name hyarel7
+
+
+az vm create --name MYVm --resource-group azuser3453_mml.local@techademy.com --image Win2022AzureEditionCore --admin-username azureuser --admin-password Pa##word12345 --size Standard_D2s_v3 --location eastus
+
+
+az vm delete --resource-group rg-azuser2901_mml.local-SWZfe --name myVM
+az vm redeploy --resource-group rg-azuser2901_mml.local-SWZfe --name myVM
+ az vm show --resource-group rg-azuser2901_mml.local-SWZfe --name myVM
+
+Start a VM	az vm start --resource-group myResourceGroup --name myVM
+Stop a VM	az vm stop --resource-group myResourceGroup --name myVM
+Deallocate a VM	az vm deallocate --resource-group myResourceGroup --name myVM
+Restart a VM	az vm restart --resource-group myResourceGroup --name myVM
+Redeploy a VM	az vm redeploy --resource-group myResourceGroup --name myVM
+Delete a VM	az vm delete --resource-group myResourceGroup --name myVM
+
+
+
+
+
+Install-WindowsFeature -ConfigurationFilePath d:\ConfigurationFiles\ADCSConfigFile.xml
+
+Install-WindowsFeature -Name Web-Server -IncludeAllSubFeature -ComputerName Server1 -WhatIf
+
+
+
