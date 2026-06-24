@@ -1,0 +1,136 @@
+build:
+    script:
+        - echo "first step"
+        - echo "second step"
+test-jobs:
+    script:
+        - echo "testing jobs"
+deploy-jobs:
+    script:
+        - echo "Deploying jobs"      
+-------------
+
+
+stages:
+    - build
+    - test
+    - deploy
+
+
+build-job:
+    stage: build
+    script:
+        - echo "first step"
+        - echo "second step"
+test-job:
+     stage: test
+     script:
+         - echo "testing jobs"
+deploy-job:
+     stage: deploy
+     when: manual
+     script:
+         - echo "Deploying jobs"
+
+
+---------------------------
+
+
+basic.sh
+
+#!.bin/bash
+
+echo "Hello hyarel how are you" ? file1
+touch file2
+echo "Hello devop how are you" > file2
+mv file1 file4
+echo "All files created & renamed"
+
+
+
+.gitlab-ci.yml
+
+bash_execute:
+    script:
+        - bash ./basic.sh
+
+
+________________________________
+
+
+download or view artifact 
+
+bash_execute:
+    script:
+        - mkdir devops
+        - cp ./basic.sh devops
+        - cd devops
+        - bash ./basic.sh
+        - touch newfile1
+    artifacts:
+        paths: 
+            - "./devops"
+        when: on_success
+        access: all
+        expire_in: 30 days
+
+
+------------------------
+
+
+Variables
+
+
+bash_execute:
+    script:
+        - echo "My name is $Name"
+        - echo "password is $Pass"
+---------------
+
+https://www.youtube.com/watch?v=Ip2TA2ijDmA&t=709s
+
+https://www.youtube.com/watch?v=lFfqBxZf-6c
+
+-----------------------------------------
+
+
+
+stages:
+    - build
+    - test
+    - push_to_dockerhub
+    - deploy
+
+
+
+build-job:
+    stage: build
+    script:
+        - docker build -t node-app:latest
+    tags:
+        - dev
+
+test-job:
+     stage: test
+     script:
+         - echo "testing jobs"
+     tags:
+        - dev
+
+push-job:
+     stage: push_to_dockerhub
+     script:
+         - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+         - docker login tag node-app:latest $DOCKERHUB_USER/node-app:latest
+         - docker push $DOCKERHUB_USER/node-app:latest
+     tags:
+        - dev
+
+
+deploy-job:
+     stage: deploy container
+     script:
+         - docker compose up -d
+     tags:
+        - dev
+
