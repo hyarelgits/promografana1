@@ -1,0 +1,68 @@
+# Azure Pipelines YAML equivalent of the classic .NET Framework build pipeline
+# Replaces: Use NuGet, NuGet restore, Build solution, Test Assemblies,
+#           Publish symbols path, Publish Artifact
+
+trigger:
+  branches:
+    include:
+      - main   # update to match your default branch (e.g. master, develop)
+
+pool:
+  vmImage: 'windows-latest'   # use a Windows agent for VSBuild/VSTest/MSBuild
+
+variables:
+  solution: '**/*.sln'          # update to a specific .sln path if you have more than one
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+# 1. Use NuGet (installs a specific NuGet.exe version on the agent)
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet'
+  inputs:
+    versionSpec: ''   # leave blank for latest, or pin e.g. '6.x'
+
+# 2. NuGet restore
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(solution)'
+
+# 3. Build solution
+- task: VSBuild@1
+  displayName: 'Build solution'
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# 4. Test Assemblies
+- task: VSTest@2
+  displayName: 'Test Assemblies'
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    testAssemblyVer2: |
+      **\$(buildConfiguration)\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+
+# 5. Publish symbols path
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\$(buildConfiguration)\**\*.pdb'
+    PublishSymbols: true
+    SymbolServerType: 'TeamServices'
+  continueOnError: true
+
+# 6. Publish Artifact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
