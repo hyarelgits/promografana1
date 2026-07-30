@@ -1,0 +1,296 @@
+[webservers]
+2
+192.168.1.101 ansible_user=ubuntu
+Show more lines
+
+Test connectivity:
+
+Shell
+1
+ansible webservers -i hosts -m ping
+Show more lines
+
+Expected:
+
+Plain Text
+1
+192.168.1.101 | SUCCESS => {
+2
+"ping": "pong"
+3
+}
+Show more lines
+2. Install Apache (HTTP Package) Using Ad-hoc Command
+
+For Ubuntu/Debian worker nodes:
+
+Shell
+1
+ansible webservers -i hosts -b -m apt -a "name=apache2 state=present update_cache=yes"
+Show more lines
+
+Where:
+
+-b = become (sudo)
+apt = package manager module
+apache2 = Apache package name
+3. Verify Apache Installation
+Shell
+1
+ansible webservers -i hosts -m shell -a "systemctl status apache2 --no-pager"
+Show more lines
+
+Or check version:
+
+Shell
+1
+ansible webservers -i hosts -m command -a "apache2 -v"
+2
+ 
+Show more lines
+4. Using a Playbook (Recommended)
+
+Create install_apache.yml:
+
+YAML
+1
+---
+2
+- name: Install Apache on worker nodes
+3
+hosts: webservers
+4
+become: yes
+5
+ 
+6
+tasks:
+7
+- name: Install Apache
+8
+apt:
+9
+name: apache2
+10
+state: present
+11
+update_cache: yes
+12
+ 
+13
+- name: Start and enable Apache
+14
+service:
+15
+name: apache2
+16
+state: started
+17
+enabled: yes
+Show more lines
+
+Run the playbook:
+
+Shell
+1
+ansible-playbook -i hosts install_apache.yml
+Show more lines
+For RHEL/CentOS Worker Nodes
+
+Use:
+
+Shell
+1
+ansible webservers -i hosts -b -m yum -a "name=httpd state=present"
+Show more lines
+
+Start the service:
+
+Shell
+1
+ansible webservers -i hosts -b -m service -a "name=httpd state=started enabled=yes"
+Show more lines
+
+This installs and starts Apache (apache2 on Ubuntu, httpd on RHEL/CentOS) on the worker node from the Ansible master server.
+
+Provide your feedback on BizChat
+You said:
+configure worker node in anisble
+Copilot said:
+Copilot
+
+To configure a worker node (managed node) in Ansible, perform the following steps.
+
+1. Install SSH on the Worker Node
+
+On the worker node (Ubuntu):
+
+Shell
+1
+sudo apt update
+2
+sudo apt install -y openssh-server
+3
+sudo systemctl enable ssh
+4
+sudo systemctl start ssh
+Show more lines
+
+Check:
+
+Shell
+1
+systemctl status ssh
+Show more lines
+2. Create SSH Key on Ansible Master
+
+On the Ansible control node:
+
+Shell
+1
+ssh-keygen -t rsa -b 4096
+Show more lines
+
+Press Enter for default location.
+
+3. Copy SSH Key to Worker Node
+Shell
+1
+ssh-copy-id ubuntu@<worker-node-ip>
+Show more lines
+
+Example:
+
+Shell
+1
+ssh-copy-id ubuntu@192.168.1.101
+Show more lines
+
+Verify passwordless login:
+
+Shell
+1
+ssh ubuntu@192.168.1.101
+Show more lines
+4. Create Ansible Inventory
+
+Edit inventory file:
+
+Shell
+1
+sudo vi /etc/ansible/hosts
+Show more lines
+
+Add:
+
+INI
+1
+[webservers]
+2
+192.168.1.101 ansible_user=ubuntu
+Show more lines
+
+Or create your own inventory file:
+
+Shell
+1
+vi hosts
+Show more lines
+INI
+1
+[workers]
+2
+192.168.1.101 ansible_user=ubuntu
+3
+192.168.1.102 ansible_user=ubuntu
+Show more lines
+5. Test Connectivity
+Shell
+1
+ansible workers -i hosts -m ping
+Show more lines
+
+Expected output:
+
+Plain Text
+1
+192.168.1.101 | SUCCESS => {
+2
+"ping": "pong"
+3
+}
+4
+``
+Show more lines
+6. Configure Sudo Access (If Needed)
+
+On worker node:
+
+Shell
+1
+sudo visudo
+Show more lines
+
+Ensure user has sudo privileges:
+
+Plain Text
+1
+ubuntu ALL=(ALL) NOPASSWD:ALL
+Show more lines
+7. Gather Worker Node Information
+Shell
+1
+ansible workers -i hosts -m setup
+Show more lines
+8. Test Package Installation
+Shell
+1
+ansible workers -i hosts -b -m apt -a "name=apache2 state=present update_cache=yes"
+Show more lines
+Common Commands
+
+Check connectivity:
+
+Shell
+1
+ansible all -i hosts -m ping
+Show more lines
+
+Check disk usage:
+
+Shell
+1
+ansible workers -i hosts -m shell -a "df -h"
+Show more lines
+
+Check uptime:
+
+Shell
+1
+ansible workers -i hosts -m command -a "uptime"
+Show more lines
+Example Setup
+
+Master Node: 192.168.1.100
+
+Worker Node: 192.168.1.101
+
+Inventory:
+
+INI
+1
+[workers]
+2
+192.168.1.101 ansible_user=ubuntu
+Show more lines
+
+Test:
+
+Shell
+1
+ansible workers -m ping
+Show more lines
+
+If you get "ping": "pong", your worker node is successfully configured in Ansible.
+
+Provide your feedback on BizChat
