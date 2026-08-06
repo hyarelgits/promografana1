@@ -1,0 +1,17 @@
+
+---
+- name: Array Example
+hosts: localhost
+gather_facts: no
+
+vars:
+  fruits:
+    - apple
+    - banana
+    - mango
+
+ tasks:
+   - name: Print each fruit
+     debug:
+       msg: "{{ item }}"
+     loop: "{{ fruits }}"
