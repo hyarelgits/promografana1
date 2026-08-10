@@ -1,0 +1,431 @@
+How to Install Ansible on Ubuntu 24.04 Step-by-Step
+
+echo "sysops ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/sysops
+
+$ sudo apt update
+$ sudo apt upgrade -y
+
+
+$ sudo reboot
+
+
+ Add Ansible PPA Repository
+
+
+$ sudo apt install -y software-properties-common
+$ sudo add-apt-repository --yes --update ppa:ansible/ansible
+
+
+
+$ sudo apt update
+
+
+$ sudo apt install -y ansible
+
+
+
+$ ansible --version
+
+
+
+
+$ ssh-keygen -t rsa
+
+
+
+192.168.1.200 node1.example.com
+192.168.1.77  node2.example.com
+
+
+$ ssh-copy-id node1.example.com
+$ ssh-copy-id node2.example.com
+
+
+
+
+Create Ansible.cfg File and Setup Inventory
+
+
+
+
+$ mkdir demo && cd demo
+
+
+$ ansible-config init --disabled | tee ansible.cfg
+
+
+$ vi ~/demo/ansible.cfg
+
+
+
+
+inventory      = /home/sysops/demo/inventory
+remote_user = sysops
+host_key_checking = Falsebecome=True
+become_method=sudo
+become_user=root
+become_ask_pass=False
+
+$ vi ~/demo/inventory
+[dev]
+VM1
+
+[prod]
+VM2
+
+
+$ cd demo/
+$ ansible --version
+
+
+
+
+$ ansible all -m ping
+
+
+Test Ansible Installation
+
+
+
+
+$ vi packages.yaml
+---
+- name: Playbook to Install Packages
+  hosts:
+    - dev
+    - prod
+  tasks:
+  - name: Install php and mariadb
+    package:
+      name:
+        - php
+        - mariadb-server
+      state: present
+
+
+
+
+$ ansible-playbook packages.yaml
+
+
+
+
+$ ansible dev -m shell -a 'dpkg -l | grep -E "php|mariadb"'
+$ ansible prod -m shell -a 'rpm -qa | grep -E "php|mariadb"'
+
+
+
+
+GNU nano 6.2                       /etc/hosts                                 
+127.0.0.1       localhost
+127.0.1.1       VM1
+192.168.11.140  VM1
+192.168.11.148  VM2
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+
+
+root@VM1:/home/devops/Desktop/demo# ls
+ansible.cfg  packages.yaml
+
+
+
+
+
+
+
+pt-get update
+    2  clear
+    3  s
+    4  ls
+    5  dir
+    6  echo "sysops ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/sysops
+    7  sudo apt update
+    8  $ sudo apt upgrade -y
+    9  sudo apt upgrade -y
+   10  sudo apt install -y software-properties-common
+   11  sudo apt update
+   12  sudo apt install -y ansible
+   13  ansible --version
+   14  sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+   15  ansible --version
+   16  sudo localectl set-locale LANG=en_US.UTF-8
+   17  localectl status
+   18  ansible --version
+   19  reboot
+   20  ansible --version
+   21  ifconfig
+   22  apt install net-tools
+   23  ifconfig
+   24  nano /etc/hosts
+   25  ssh-copy-id 192.168.11.140
+   26  ssh-copy-id root@192.168.11.140
+   27  apt install ssh
+   28  apt install openserver
+   29  apt install open-server
+   30  ssh-copy-id root@192.168.11.140
+   31  clear
+   32  sudo nano /etc/ssh/sshd_config
+   33  sudo systemctl restart ssh
+   34  ssh-copy-id root@192.168.11.140
+   35  ssh-copy-id root@192.168.11.148
+   36  mkdir demo && cd demo
+   37  ansible-config init --disabled | tee ansible.cfg
+   38  nano ~/demo/ansible.cfg
+   39  ls
+   40  nano 
+   41  nano ansible.cfg 
+   42  nano ~/demo/inventory
+   43  ls
+   44  nano inventory
+   45  ansible all -m ping 
+   46  ansible 192.168.11.140  -m ping 
+   47  ls
+   48  mv inventory inventory.yml
+   49  ls
+   50  ansible all -m ping 
+   51  mkdir /home/sysops/demo/inventory
+   52  mkdir -p  /home/sysops/demo/inventory
+   53  cd /home/sysops/demo/inventory/
+   54  ls
+   55  cd /home/devops/Desktop/demo
+   56  ls
+   57  mv inventory.yml inventory
+   58  ls
+   59  mv inventory /home/devops/Desktop/demo
+   60  ls
+   61  cd /home/sysops/demo
+   62  rm inventory/
+   63  rm -rf inventory/
+   64  mv inventory /home/devops/Desktop/demo
+   65  ls
+   66  cd /home/devops/Desktop/demo/
+   67  ls
+   68  mv inventory /home/sysops/demo
+   69  ansible all -m ping 
+   70  nano /demo/ansible.cfg
+   71  ls
+   72  nano ansible.cfg 
+   73  systemctl restart ansible
+   74  clear
+   75  ansible all -m ping
+   76  ansible-playbook site.yml --ask-pass
+   77  ansible all -m ping -vvvv
+   78  ansible all -m ping
+   79  ssh-copy-id sysops@192.168.11.140
+   80  ls
+   81  nano ansible.cfg 
+   82  ansible all -m ping 
+   83  ls
+   84  cd  /home/sysops/demo
+   85  ls
+   86  nano  packages.yaml
+   87  ansible-playbook packages.yaml
+   88  ls
+   89  rm packages.yaml 
+   90  cd /home/devops/Desktop/demo/
+   91  ls
+   92  nano package.yaml
+   93  ansible-playbook packages.yaml
+   94  ls
+   95  rm package.yaml 
+   96  cd /home/sysops/demo/
+   97  nano package.yaml
+   98  ansible-playbook packages.yaml
+   99  ansible-playbook package.yaml
+  100  nano /etc/hosts
+  101  ls
+  102  nano inventory 
+  103  ansible all -m ping
+  104  cd /home/devops/Desktop/demo/
+  105  ansible all -m ping
+  106  ls
+  107  nano packages.yaml
+  108  ansible-playbook packages.yaml
+  109  ansible prod -m shell -a 'rpm -qa | grep -E "php|mariadb"'
+  110  nano /etc/hosts
+  111  ls
+  112  nano ansible.cfg 
+  113  gedit ansible.cfg 
+
+
+
+ ansible all -m file -a "path=/tmp/devopsfile1 state=touch mode=0755"
+  123  cd /tmp
+  124  ls
+  125  ls -li devopsfile1 
+  126  clear
+  127  ansible VM2 -m file -a "path=/tmp/devopsfile2 state=touch mode=0755"
+  128  LS
+  129  ls
+  130  cd /home/devops/Desktop/demo/
+
+ansible dev -m file -a "path=/tmp/devopsfile3 state=touch mode=0755"
+
+ ssh root@192.168.11.148
+  151  clear
+  152  ansible dev -m ping
+  153  ansible prod -m ping
+
+
+ansible VM2 -m copy -a 'src=/home/devops/Desktop/demo/cal.txt dest=/tmp'
+
+ansible dev -m apt -a "name=apache2 state=present"
+
+ansible dev -m service  -a "name=sshd state=started"
+sible all -m copy -a "src=index.html dest=/var/www/html" -b
+
+
+
+ansible all -m command -a "uptime"
+
+
+
+ansible all -m shell -a "lsblk"
+
+
+
+
+---
+- name: create a user named hyarel
+  hosts: all
+  become: true
+
+  tasks:
+    - name: create user
+      user:
+        name: hyarel
+        state: present
+    - name: add user to group
+      user:
+        name: hyarel
+        groups: wheel
+
+
+
+---
+- name: installed httpd
+  hosts: all
+  become: true
+  tasks:
+    - name: installed httpd
+      apt:
+        name: apache2
+        state: present
+      modify: start httpd
+  handler:
+    - name: start httpd service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+
+
+
+var.yml
+
+--
+- name: understading variables
+  hosts: all
+  become: true
+  tasks:
+    - name: installed any packages with var
+      apt:
+        name: "{{ a }}"
+        state: present
+
+
+
+
+
+ansible-playbook var.yml --syntax-check
+  297  ansible-playbook var.yml --extra-vars "a=git"
+  298  nano var.yml 
+  299  apt remove git
+  300  ansible-playbook var.yml --extra-vars "a=git"
+  301  apt remove git
+  302  nano var.yml 
+  303  ansible-playbook var.yml --extra-vars "a=tree"
+  304  apt remove tree
+  305  apt remove httpd
+  306  nano var.yml 
+  307  ls
+  308  nano httpd.yaml 
+  309  nano var.yml 
+  310  ansible-playbook var.yml --extra-vars "a=tree"
+  311  tree --version
+  312  ansible-playbook var.yml --extra-vars "a=git"
+  313  git --version
+  314  clear
+
+
+
+loop.yml
+
+--
+- name: understading variables
+  hosts: all
+  become: true
+  vars:
+    installed_list:
+      - apache2
+      - git
+      - tree
+      - docker
+  tasks:
+    - name: installed multiple packages at a time
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ installed_list }}"
+
+
+  clear
+  315  nano var.yml 
+  316  history
+  317  ls
+  318  cp var.yml loop.yml
+  319  nano loop.yml 
+  320  apt remove git 
+  321  apt remove tree
+  322  apt remove git docker tree apache2
+  323  clear
+  324  ansible-playbook loop.yml --syntax-check
+  325  ansible-playbook loop.ym
+  326  ansible-playbook loop.yml
+  327  nano loop.yml 
+  328  ansible-playbook loop.yml --syntax-check
+  329  ansible-playbook loop.yml
+  330  clear
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
