@@ -409,6 +409,31 @@ loop.yml
 
 
 
+ansible 192.168.11.148 -m file -a "path=/tmp/devopsfile2 state=touch mode=0755"
+ansible dev -m file -a "path=/tmp/devopsfile3 state=touch mode=0755"
+ansible dev -m copy -a 'src=/etc/passwd dest=/tmp'
+cd /tmp
+ls
+ansible all -m copy -a 'src=/etc/passwd dest=/tmp'
+
+ansible dev -m apt -a "name=apache2 state=present"
+cd /etc/ansible/
+ansible dev -m apt -a "name=apache2 state=present"
+ansible dev -m service  -a "name=sshd state=started"
+systemctl status sshd
+clear
+ansible all -m copy -a "src=index.html dest=/var/www/html" -b
+clear
+history
+
+ansible-playbook user.yml --ask-become-pass
+
+ansible-playbook user.yml --ask-become-pass
+
+
+
+
+
 
 
 
