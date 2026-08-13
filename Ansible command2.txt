@@ -1,0 +1,212 @@
+ansible 192.168.11.148 -m file -a "path=/tmp/devopsfile2 state=touch mode=0755"
+ansible dev -m file -a "path=/tmp/devopsfile3 state=touch mode=0755"
+ansible dev -m copy -a 'src=/etc/passwd dest=/tmp'
+cd /tmp
+ls
+ansible all -m copy -a 'src=/etc/passwd dest=/tmp'
+
+ansible dev -m apt -a "name=apache2 state=present"
+cd /etc/ansible/
+ansible dev -m apt -a "name=apache2 state=present"
+ansible dev -m service  -a "name=sshd state=started"
+systemctl status sshd
+clear
+ansible all -m copy -a "src=index.html dest=/var/www/html" -b
+clear
+history
+
+ansible-playbook user.yml --ask-become-pass
+
+ansible-playbook user.yml --ask-become-pass
+
+
+
+How to Install Ansible on Ubuntu 24.04 Step-by-Step
+
+echo "sysops ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/sysops
+
+$ sudo apt update
+$ sudo apt upgrade -y
+$ sudo reboot
+ Add Ansible PPA Repository
+
+
+$ sudo apt install -y software-properties-common
+$ sudo add-apt-repository --yes --update ppa:ansible/ansible
+$ sudo apt update
+$ sudo apt install -y ansible
+$ ansible --version
+$ ssh-keygen -t rsa
+192.168.1.200 node1.example.com
+192.168.1.77  node2.example.com
+
+
+$ ssh-copy-id node1.example.com
+$ ssh-copy-id node2.example.com
+
+
+
+
+$ cd demo/
+$ ansible --version
+$ ansible all -m ping
+
+
+Test Ansible Installation
+
+$ vi packages.yaml
+---
+- name: Playbook to Install Packages
+  hosts:
+    - dev
+    - prod
+  tasks:
+  - name: Install php and mariadb
+    package:
+      name:
+        - php
+        - mariadb-server
+      state: present
+
+
+$ ansible dev -m shell -a 'dpkg -l | grep -E "php|mariadb"'
+$ ansible prod -m shell -a 'rpm -qa | grep -E "php|mariadb"'
+
+ ansible all -m file -a "path=/tmp/devopsfile1 state=touch mode=0755"
+  123  cd /tmp
+  124  ls
+  125  ls -li devopsfile1 
+  126  clear
+  127  ansible VM2 -m file -a "path=/tmp/devopsfile2 state=touch mode=0755"
+  128  LS
+  129  ls
+  130  cd /home/devops/Desktop/demo/
+
+ansible dev -m file -a "path=/tmp/devopsfile3 state=touch mode=0755"
+
+ansible VM2 -m copy -a 'src=/home/devops/Desktop/demo/cal.txt dest=/tmp'
+
+ansible dev -m apt -a "name=apache2 state=present"
+
+ansible dev -m service  -a "name=sshd state=started"
+sible all -m copy -a "src=index.html dest=/var/www/html" -b
+ansible all -m command -a "uptime"
+ansible all -m shell -a "lsblk"
+
+
+
+inventory=/etc/ansible/hosts
+
+ansible.cfg
+remote_user=root
+become_ask_pass=False
+become_user=root
+become_ask_pass=False
+become_method=sudo
+become_user=root
+
+
+nano /etc/ssh/sshd.config
+
+PermitRootLogin yes
+
+
+nano /etc/ansible/hosts
+
+[dev]
+192.168.11.140
+
+[prod]
+192.168.11.148
+
+
+
+
+---
+- name: installed apache2
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: installed apache2 packages
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: start apache2 service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+
+
+---
+- name: create a user named kevin
+  hosts: all
+  become: true
+  
+
+  tasks:
+    - name: create user
+      user:
+        name: kevin
+        state: present
+
+
+    - name: add user to group
+      user:
+        name: kevin
+        groups: wheel
+
+
+
+
+---
+  - name: understading variables
+    hosts: all
+    become: true
+    tasks:
+      - name: installed any packages with var
+        apt:
+          name: "{{ a }}"
+          state: present
+
+
+
+---
+- name: understading variables
+  hosts: all
+  become: true
+  vars:
+    installed_list:
+      - apache2
+      - git
+      - tree
+      - docker.io
+  tasks:
+    - name: installed multiple packages at a time
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ installed_list }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
