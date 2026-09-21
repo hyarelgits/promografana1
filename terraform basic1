@@ -1,0 +1,94 @@
+variables.tf
+
+variable "username" {
+  type    = string
+  default = "Hyarel"
+}
+
+variable "age" {
+  type    = number
+  default = 25
+}
+
+output.tf
+
+output "user_name" {
+  value = var.username
+}
+
+output "user_age" {
+  value = var.age
+}
+
+Run Commands
+
+terraform init
+terraform apply
+
+Output
+
+user_age = 25
+user_name = "Hyarel"
+
+-------------------------------
+
+
+
+Variable Without Default Value
+
+variables.tf
+
+variable "city" {
+  type = string
+}
+
+
+output.tf
+
+output "city_name" {
+  value = var.city
+}
+
+
+Execute
+
+terraform apply -var="city=Pune"
+
+Output:
+
+city_name = "Pune"
+
+-------------------
+
+
+Using terraform.tfvars
+
+
+variables.tf
+
+variable "name" {
+  type = string
+}
+
+variable "country" {
+  type = string
+}
+
+
+terraform.tfvars
+name    = "Hyarel"
+country = "India"
+
+
+output.tf
+
+output "details" {
+  value = "${var.name} lives in ${var.country}"
+}
+
+
+Output:
+
+details = "Hyarel lives in India"
+
+
