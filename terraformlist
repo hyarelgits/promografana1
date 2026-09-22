@@ -1,0 +1,129 @@
+Terraform list Example
+
+Terraform does not have a direct list command, but List is a common data type used to store multiple values.
+
+1. List Variable Example
+
+
+variable "servers" {
+  type = list(string)
+
+  default = [
+    "web01",
+    "web02",
+    "web03"
+  ]
+}
+
+output "server_names" {
+  value = var.servers
+}
+
+Output:
+
+server_names = [
+  "web01",
+  "web02",
+  "web03"
+]
+
+
+
+
+
+
+
+
+------------------
+
+2. Access List Elements
+
+
+variable "servers" {
+  type    = list(string)
+  default = ["web01", "web02", "web03"]
+}
+
+output "first_server" {
+  value = var.servers[0]
+}
+
+output "second_server" {
+  value = var.servers[1]
+}
+
+
+Output:
+first_server  = web01
+second_server = web02
+
+
+-----------------
+
+
+List of Numbers
+
+variable "ports" {
+  type    = list(number)
+  default = [22, 80, 443]
+}
+
+output "all_ports" {
+  value = var.ports
+}
+
+
+
+---------------
+
+Loop Through a List
+
+
+variable "users" {
+  type    = list(string)
+  default = ["admin", "dev", "test"]
+}
+
+output "user_list" {
+  value = [
+    for user in var.users : user
+  ]
+}
+----------------
+
+
+Common List Functions
+
+variable "names" {
+  default = ["ram", "shyam", "mohan"]
+}
+
+output "first" {
+  value = element(var.names, 0)
+}
+
+output "total" {
+  value = length(var.names)
+}
+
+output "joined" {
+  value = join(",", var.names)
+}
+
+
+output
+
+first  = ram
+total  = 3
+joined = ram,shyam,mohan
+
+
+------------
+
+
+
+
+
+
+
+
