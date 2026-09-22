@@ -27,6 +27,10 @@ server_names = [
   "web03"
 ]
 
+ terraform init 
+   48  terraform validate
+   49  terraform plan
+   50  terraform apply 
 
 
 
