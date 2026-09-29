@@ -1,0 +1,197 @@
+main.tf
+
+ariable username {}
+ output printname {
+        value = "hello, ${var.username}"
+}
+
+----------------
+
+mulvar.tf
+
+ariable "userage" {
+        type = map
+        default = {
+          userA = 20
+          userB = 30
+          userC = 40
+        }
+}
+
+output "userage" {
+  value = "My name is user & my age is ${lookup(var.userage, "userC")}"
+}
+
+------------
+
+
+mulvariablesadv1.tf
+
+
+ariable "servers" {
+  type = list(string)
+
+  default = [
+    "web01",
+    "web02",
+    "web03"
+  ]
+}
+
+output "server_names" {
+  value = var.servers
+}
+------------------
+
+
+nano variableadv2.tf
+
+variable "servers" {
+  type    = list(string)
+  default = ["web01", "web02", "web03"]
+}
+
+output "first_server" {
+  value = var.servers[0]
+}
+
+output "second_server" {
+  value = var.servers[1]
+}
+
+---------------
+
+mulfiles
+
+
+first.tf
+
+  GNU nano 6.2                        first.tf                                  
+output "firstoutputblock" {
+        value = "This is first outputblock"
+}
+
+----------
+
+
+second.tf
+
+utput "secondoutputblock" {
+        value = "This is second  outputblock"
+}
+
+-----------
+
+----------------
+
+
+list
+
+main.tf
+
+ariable users {
+        type = list
+}
+output printfirst {
+        value = "first user is ${var.users[0]}"
+}
+
+#to see ooutput 
+#var.users
+#  Enter a value: [ "devops", "hyarel" ]
+
+-------------
+
+listfunction
+
+main.tf
+
+ariable "names" {
+  default = ["ram", "shyam", "mohan"]
+}
+
+output "first" {
+  value = element(var.names, 0)
+}
+
+output "total" {
+  value = length(var.names)
+}
+
+output "joined" {
+  value = join(",", var.names)
+}
+
+-------------
+
+github
+
+main.tf
+
+provider "github" {
+  token = "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"
+}
+
+resource "github_repository" "terraform_repo_masterhls" {
+  name        = "test-repo-masterhls"
+  description = "This is first test repo master"
+  visibility  = "public"
+  auto_init   = true
+}
+
+--------------
+
+
+instance
+
+id_rsa  id_rsa.pub  instance.tf  terraform.tfstate
+
+
+ssh-keygen
+
+
+apt install aws-configure --classic
+
+
+nano instance.tf
+
+esource "aws_key_pair" "key12-tf" {
+  key_name   = "key12-tf"
+  public_key = file("${path.module}/id_rsa.pub")
+}
+
+
+resource "aws_security_group" "allow_tls1" {
+  name        = "allow_tls1"
+  description = "allow TLS inbound traffic"
+
+  dynamic "ingress" {
+    for_each = [22, 80, 443, 3306, 27017]
+
+    iterator = port
+    content {
+
+      description = "TLS from vpc"
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+}
+
+resource "aws_instance" "web" {
+  ami                    = "ami-0b6d9d3d33ba97d99"
+  instance_type          = "t3.micro"
+  key_name               = aws_key_pair.key12-tf.key_name
+  vpc_security_group_ids = ["${aws_security_group.allow_tls1.id}"]
+  tags = {
+    Name = "terraforminstance"
+  }
+}
+
+
+
+
+
+
