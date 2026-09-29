@@ -1,3 +1,35 @@
+
+
+mulfiles
+
+
+first.tf
+
+  GNU nano 6.2                        first.tf                                  
+output "firstoutputblock" {
+        value = "This is first outputblock"
+}
+
+----------
+
+
+second.tf
+
+utput "secondoutputblock" {
+        value = "This is second  outputblock"
+}
+
+
+
+
+
+
+
+-----------
+
+
+
+
 main.tf
 
 ariable username {}
