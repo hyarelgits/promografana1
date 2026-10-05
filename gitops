@@ -1,0 +1,486 @@
+GitOps Demo (2 Hours) - Complete Hands-on Session
+
+This 2-hour demo is designed for beginners and covers:
+
+✅ What is GitOps
+ ✅ Architecture
+ ✅ Install ArgoCD
+ ✅ Deploy Application using GitOps
+ ✅ Update Application via Git Commit
+ ✅ Rollback using Git
+ ✅ Real-world Workflow
+
+Agenda
+Duration	Topic15 Min	GitOps Basics
+15 Min	Architecture
+20 Min	Kubernetes Setup
+20 Min	Install ArgoCD
+20 Min	Deploy App via GitOps
+15 Min	Update Application
+10 Min	Rollback Demo
+5 Min	Q&A
+Part 1: What is GitOps?
+
+Traditional Method
+
+Plain Text
+Developer
+|
+v
+kubectl apply
+|
+v
+Kubernetes
+
+Problem:
+
+Manual deployment
+Human errors
+No version control
+Difficult rollback
+
+GitOps Method
+
+Plain Text
+Developer
+|
+v
+Git Repository
+|
+v
+ArgoCD
+|
+v
+Kubernetes Cluster
+
+Git becomes the single source of truth.
+
+Every change happens via Git Commit.
+
+Part 2: GitOps Architecture
+Plain Text
++-------------------+
+| Developer |
++-------------------+
+|
+v
++-------------------+
+| Git Repository |
++-------------------+
+|
+v
++-------------------+
+| ArgoCD |
+| GitOps Controller |
++-------------------+
+|
+v
++-------------------+
+| Kubernetes |
++-------------------+
+Part 3: Environment Setup
+
+Ubuntu Machine
+
+Install Docker
+
+Shell
+sudo apt update
+sudo apt install docker.io -y
+
+Verify
+
+Shell
+docker --version
+
+Install Kind
+
+Shell
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+ 
+chmod +x kind
+ 
+sudo mv kind /usr/local/bin
+
+Verify
+
+Shell
+kind version
+
+Create Kubernetes Cluster
+
+Shell
+kind create cluster --name gitops-demo
+``
+
+Check
+
+Shell
+kubectl get nodes
+
+Output
+
+Plain Text
+NAME STATUS
+gitops-demo-control-plane Ready
+Part 4: Install ArgoCD
+
+Create Namespace
+
+Shell
+kubectl create namespace argocd
+
+Install ArgoCD
+
+Shell
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+Wait
+
+Shell
+kubectl get pods -n argocd
+
+All pods should be Running.
+
+Port Forward
+
+Shell
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+Open
+
+Plain Text
+https://localhost:8080
+ 
+
+Get Password
+
+Shell
+kubectl get secret argocd-initial-admin-secret \
+-n argocd \
+-o jsonpath
+
+Login
+
+Plain Text
+username: admin
+password: <output>
+Part 5: Create Demo Application
+
+Folder Structure
+
+Plain Text
+gitops-demo/
+│
+├── deployment.yaml
+├── service.yaml
+└── namespace.yaml
+
+namespace.yaml
+
+YAML
+apiVersion: v1
+kind: Namespace
+metadata:
+name: demo
+``
+
+deployment.yaml
+
+YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: nginx
+namespace: demo
+spec:
+replicas: 2
+ 
+selector:
+matchLabels:
+app: nginx
+ 
+template:
+metadata:
+labels:
+app: nginx
+ 
+spec:
+containers:
+- name: nginx
+image: nginx:1.25
+ 
+ports:
+- containerPort: 80
+
+service.yaml
+
+YAML
+apiVersion: v1
+kind: Service
+metadata:
+name: nginx-service
+namespace: demo
+ 
+spec:
+selector:
+app: nginx
+ 
+ports:
+- port: 80
+targetPort: 80
+ 
+type: ClusterIP
+``
+Part 6: Push Code to GitHub
+
+Create Repository
+
+Plain Text
+gitops-demo
+
+Commands
+
+Shell
+git init
+ 
+git add .
+ 
+git commit -m "initial commit"
+ 
+git branch -M main
+ 
+git remote add origin https://github.com/USER/gitops-demo.git
+ 
+git push -u origin main
+Part 7: Create ArgoCD Application
+
+ArgoCD UI
+
+Applications
+
+→ New App
+
+Fill
+
+Plain Text
+Application Name : nginx-app
+ 
+Project : default
+ 
+Repository URL :
+https://github.com/USER/gitops-demo
+ 
+Revision :
+HEAD
+ 
+Path :
+/
+ 
+Cluster URL :
+https://kubernetes.default.svc
+ 
+Namespace :
+demo
+
+Create
+
+Sync
+
+Click
+
+Plain Text
+Sync
+
+ArgoCD deploys automatically.
+
+Verify
+
+Shell
+kubectl get pods -n demo
+
+Output
+
+Plain Text
+nginx-xxxxx Running
+nginx-yyyyy Running
+ 
+Part 8: Live GitOps Demo
+
+Current
+
+YAML
+replicas: 2
+
+Change to
+
+YAML
+replicas: 5
+
+Commit
+
+Shell
+git add .
+ 
+git commit -m "scale to 5"
+ 
+git push origin main
+
+Watch ArgoCD
+
+Plain Text
+OutOfSync
+↓
+Syncing
+↓
+Healthy
+
+Verify
+
+Shell
+kubectl get pods -n demo
+
+Output
+
+Plain Text
+5 Pods Running
+
+Magic of GitOps 🎯
+
+No kubectl apply used.
+
+Part 9: Image Upgrade Demo
+
+Current
+
+YAML
+image: nginx:1.25
+
+Update
+
+YAML
+image: nginx:1.27
+
+Commit
+
+Shell
+git add .
+ 
+git commit -m "upgrade nginx"
+ 
+git push origin main
+
+ArgoCD automatically updates cluster.
+
+Verify
+
+Shell
+kubectl describe pod -n demo
+
+Check image version.
+
+Part 10: Rollback Demo
+
+Suppose deployment fails.
+
+View commits
+
+Shell
+git log --oneline
+ 
+
+Rollback
+
+Shell
+git revert COMMIT_ID
+
+Push
+
+Shell
+git push origin main
+
+ArgoCD syncs automatically.
+
+Application restored.
+
+Part 11: Multi-Environment GitOps
+Plain Text
+gitops-demo
+ 
+├── dev
+│ └── deployment.yaml
+ 
+├── qa
+│ └── deployment.yaml
+ 
+├── prod
+│ └── deployment.yaml
+
+Benefits:
+
+Separate environments
+Approval workflow
+Easy auditing
+Easy rollback
+Interview Questions
+What is GitOps?
+
+Managing infrastructure and applications using Git as the source of truth.
+
+What is ArgoCD?
+
+A GitOps tool that continuously synchronizes Kubernetes with Git repositories.
+
+Source of Truth?
+
+Git Repository.
+
+GitOps Benefits?
+Automation
+Auditing
+Rollback
+Security
+Version Control
+Difference Between CI/CD and GitOps?
+
+CI/CD:
+
+Pipeline deploys code.
+
+GitOps:
+
+Git triggers desired state.
+ArgoCD pulls changes and deploys.
+Real Project Architecture
+Plain Text
+Developer
+|
+GitHub
+|
+Pull Request
+|
+Code Review
+|
+Merge
+|
+ArgoCD
+|
+AKS / EKS / GKE
+|
+Application
+End Result
+
+After 2 hours you will know:
+
+✅ GitOps Fundamentals
+ ✅ Kubernetes Deployment
+ ✅ Git Repository Management
+ ✅ ArgoCD Installation
+ ✅ Application Deployment
+ ✅ Auto Synchronization
+ ✅ Git-based Rollback
+ ✅ Production GitOps Workflow
+
+This demo works perfectly on a local Ubuntu laptop using Kind + Kubernetes + ArgoCD + GitHub, and is commonly used to demonstrate GitOps in AKS, EKS, and GKE environments.
+
+Provide your feedback on BizChat
