@@ -263,6 +263,29 @@ targetPort: 80
  
 type: ClusterIP
 ``
+
+
+----------
+
+cat > service.yaml <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: demo
+spec:
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+EOF
+``
+
+
+
+------------
 Part 6: Push Code to GitHub
 
 Create Repository
