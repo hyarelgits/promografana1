@@ -1,0 +1,74 @@
+Run:
+
+Shell
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl
+
+Add Kubernetes repository:
+
+Shell
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | \
+sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+Shell
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | \
+sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+Install kubectl:
+
+Shell
+sudo apt update
+sudo apt install -y kubectl
+
+Verify:
+
+Shell
+kubectl version --client
+Check Your Kind Cluster
+
+After kubectl is installed:
+
+Shell
+kubectl cluster-info --context kind-gitops-demo
+
+Check nodes:
+
+Shell
+kubectl get nodes
+
+Expected:
+
+Plain Text
+NAME STATUS ROLES AGE
+gitops-demo-control-plane Ready control-plane 2m
+Verify Everything
+Shell
+kind get clusters
+kubectl get nodes
+kubectl get pods -A
+
+You should see:
+
+Kind cluster ✅
+Node in Ready state ✅
+System pods running ✅
+Next Step for GitOps
+
+Install ArgoCD:
+
+Shell
+kubectl create namespace argocd
+ 
+kubectl apply -n argocd \
+-f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install
+
+Check pods:
+
+Shell
+kubectl get pods -n argocd
+
+Once kubectl is working, share the output of:
+
+Shell
+kubectl get nodes
+
+and I'll guide you through the complete GitOps + ArgoCD deployment. 🚀
