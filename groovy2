@@ -1,0 +1,272 @@
+Groovy Level 2 Practice Exercises (
+
+Level 2 focuses on:
+
+✅ Methods (Functions)
+ ✅ Parameters
+ ✅ Return Values
+ ✅ Lists
+ ✅ Maps
+ ✅ Switch Case
+ ✅ User Input
+
+Exercise 1: Create Your First Method
+Task
+
+Create a method that prints:
+
+Plain Text
+Welcome to Groovy
+Solution
+Groovy
+def welcome() {
+println "Welcome to Groovy"
+}
+ 
+Output
+Plain Text
+Welcome to Groovy
+Exercise 2: Method with Parameter
+Task
+
+Pass your name to a method.
+
+Solution
+Groovy
+def greet(name) {
+println "Hello ${name}"
+}
+ 
+greet("Hyarel")
+Output
+Plain Text
+Hello Hyarel
+Exercise 3: Method Returning Value
+Task
+
+Add two numbers and return result.
+
+Solution
+Groovy
+def add(a, b) {
+return a + b
+}
+ 
+def result = add(10, 20)
+ 
+println result
+Output
+Plain Text
+30
+Exercise 4: List Operations
+Task
+
+Create a DevOps tools list.
+
+Solution
+Groovy
+def tools = ["Docker", "Kubernetes", "Terraform"]
+ 
+println tools
+ 
+println tools[0]
+Output
+Plain Text
+[Docker, Kubernetes, Terraform]
+Docker
+Exercise 5: Loop Through List
+Task
+
+Print all tools one by one.
+
+Solution
+Groovy
+def tools = ["Docker", "Ansible", "Terraform"]
+ 
+tools.each {
+println it
+}
+Output
+Plain Text
+Docker
+Ansible
+Terraform
+Exercise 6: Map Example
+
+A map stores Key-Value pairs.
+
+Solution
+Groovy
+def employee = [
+name:"Hyarel",
+city:"Pune",
+role:"DevOps"
+]
+ 
+println employee.name
+println employee.city
+println employee.role
+Output
+Plain Text
+Hyarel
+Pune
+DevOps
+Exercise 7: Switch Case
+Task
+
+Check environment.
+
+Solution
+Groovy
+def env = "DEV"
+ 
+switch(env) {
+ 
+case "DEV":
+println "Development"
+break
+ 
+case "QA":
+println "Testing"
+break
+ 
+case "PROD":
+println "Production"
+break
+ 
+default:
+println "Unknown"
+}
+Output
+Plain Text
+Development
+Exercise 8: User Input
+Task
+
+Accept Name from user.
+
+Solution
+Groovy
+print "Enter Name: "
+ 
+def name = System.console().readLine()
+ 
+println "Welcome ${name}"
+Run
+Shell
+groovy input.groovy
+Example
+Plain Text
+Enter Name: Hyarel
+Welcome Hyarel
+Exercise 9: Find Largest Number
+Solution
+Groovy
+def a = 10
+def b = 25
+ 
+if(a > b) {
+println a
+} else {
+println b
+}
+Output
+Plain Text
+25
+Exercise 10: Multiplication Table
+Solution
+Groovy
+def num = 5
+ 
+for(i in 1..10) {
+println "${num} x ${i} = ${num*i}"
+}
+Output
+Plain Text
+5 x 1 = 5
+5 x 2 = 10
+...
+5 x 10 = 50
+Mini Project 1: Employee Information
+
+Create file:
+
+Shell
+nano employee.groovy
+Groovy
+def employee = [
+name:"Hyarel",
+city:"Pune",
+salary:50000,
+role:"DevOps Engineer"
+]
+ 
+println "Employee Details"
+println employee
+Mini Project 2: DevOps Tool Inventory
+Groovy
+def tools = [
+"Docker",
+"Kubernetes",
+"Terraform",
+"Jenkins",
+"Ansible"
+]
+ 
+println "Installed Tools"
+ 
+tools.each {
+println it
+}
+Mini Project 3: Simple Calculator
+Groovy
+def add(a,b){
+return a+b
+}
+ 
+def sub(a,b){
+return a-b
+}
+ 
+println "Addition = ${add(10,20)}"
+println "Subtraction = ${sub(20,10)}"
+Challenge Assignment
+
+Create:
+
+Plain Text
+student.groovy
+
+Requirements:
+
+Create a map
+Store Name, City, Course, Experience
+Create method displayStudent()
+Use switch case for Course
+Loop through all details
+Print output neatly
+
+Expected Concepts:
+
+✅ Functions
+ ✅ Parameters
+ ✅ Return Values
+ ✅ Lists
+ ✅ Maps
+ ✅ Switch Case
+ ✅ Loops
+
+Real Jenkins Pipeline Relation
+
+Everything you learn in Level 2 is used in Jenkins:
+
+Groovy
+def appName = "nginx"
+ 
+def deploy(app) {
+println "Deploying ${app}"
+}
+ 
+deploy(appName)
+
+This is exactly the Groovy syntax used inside Jenkins Pipelines. After Level 2, you'll be ready for Level 3: File Handling, Closures, Exception Handling, and Jenkins Pipeline Basics. 🚀
