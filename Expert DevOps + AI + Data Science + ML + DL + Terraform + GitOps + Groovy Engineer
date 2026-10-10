@@ -772,7 +772,7 @@ Run
 
 Shell
 uvicorn app.main:app --reload
-
+==================================================here i havae to tun unicorn command gave error
 Open
 
 Plain Text
