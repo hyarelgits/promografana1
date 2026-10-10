@@ -1352,36 +1352,49 @@ Shell
 ollama pull llama3
 
 app/chatbot.py
-
-Python
 import ollama
- 
+
 def ask_ai(question):
- 
-response=ollama.chat(
-model="llama3",
-messages=[
-{
-"role":"user",
-"content":question
-}
-]
-)
- 
-return response["message"]["content"]
 
-API
+    response = ollama.chat(
+        model="llama3",
+        messages=[
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
+    )
 
-Python
+    return response["message"]["content"]
+
+------------------------------
+
+File 2: app/main.py
+
+from fastapi import FastAPI
 from app.chatbot import ask_ai
- 
+
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return {
+        "message": "AI Student Management"
+    }
+
 @app.get("/chat")
- 
-def chat(question:str):
- 
-return {
-"answer":ask_ai(question)
-}
+def chat(question: str):
+
+    answer = ask_ai(question)
+
+    return {
+        "question": question,
+        "answer": answer
+    }
+
+-------------------------------------
+
 
 Example
 
