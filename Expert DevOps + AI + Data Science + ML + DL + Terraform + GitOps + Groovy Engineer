@@ -1105,7 +1105,73 @@ What You've Completed
  ✅ Model prediction
 ---------------------------------
 
+corrected code 
+import pandas as pd
+import joblib
+
+model = joblib.load("placement_model.pkl")
+
+student = pd.DataFrame({
+    "attendance": [85],
+    "cgpa": [8.2]
+})
+
+prediction = model.predict(student)
+
+if prediction[0] == 1:
+    print("Student will be placed")
+else:
+    print("Student may not be placed")
+
 ---------------
+still if not work try below command
+Fix 2: Remove Hidden Characters Automatically
+
+If you don't want to recreate the file:
+
+Shell
+sed -i 's/\xC2\xA0/ /g' predict.py
+
+Then run:
+
+Shell
+python3 predict.py
+Check Where the Problem Is
+
+Show file contents with line numbers:
+
+Shell
+cat -n predict.py
+
+or
+
+Shell
+cat -A predict.py
+
+If strange symbols appear near line 4, that's the hidden character causing the error.
+
+Expected Output
+
+After fixing:
+
+Shell
+python3 predict.py
+
+Output:
+
+Plain Text
+Student will be placed
+
+or
+
+Plain Text
+Student may not be placed
+
+depending on the trained model.
+
+
+-------------
+
 Output:
 
 Plain Text
