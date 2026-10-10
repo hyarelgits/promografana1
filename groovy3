@@ -1,0 +1,316 @@
+Groovy Level 3 - File Handling, Closures, Exception Handling
+
+Now we move from basic Groovy programming to more practical topics used in real projects and Jenkins.
+
+Topics Covered
+
+✅ File Handling
+ ✅ Reading Files
+ ✅ Writing Files
+ ✅ Closures
+ ✅ Exception Handling
+ ✅ Try-Catch-Finally
+
+Exercise 1: Create a File
+
+Create createfile.groovy
+
+Groovy
+def file = new File("student.txt")
+ 
+file.text = "Hello Groovy"
+println "File Created"
+
+Run:
+
+Shell
+groovy createfile.groovy
+
+Check:
+
+Shell
+ls
+cat student.txt
+
+Output:
+
+Plain Text
+Hello Groovy
+Exercise 2: Write Multiple Lines
+Groovy
+def file = new File("employee.txt")
+ 
+file.text = """
+Name: Hyarel
+City: Pune
+Role: DevOps
+"""
+ 
+println "Data Written Successfully"
+
+Check:
+
+Shell
+cat employee.txt
+Exercise 3: Read File
+
+Create:
+
+Shell
+nano sample.txt
+
+Content:
+
+Plain Text
+Docker
+Kubernetes
+Terraform
+
+Groovy:
+
+Groovy
+def file = new File("sample.txt")
+ 
+println file.text
+
+Output:
+
+Plain Text
+Docker
+Kubernetes
+Terraform
+Exercise 4: Read Line by Line
+Groovy
+def file = new File("sample.txt")
+ 
+file.eachLine {
+println it
+}
+
+Output:
+
+Plain Text
+Docker
+Kubernetes
+Terraform
+Exercise 5: Count Lines
+Groovy
+def count = 0
+ 
+new File("sample.txt").eachLine {
+count++
+}
+ 
+println "Total Lines = ${count}"
+
+Output:
+
+Plain Text
+Total Lines = 3
+Exercise 6: Closure Example
+
+A Closure is like an anonymous function.
+
+Groovy
+def welcome = {
+println "Welcome to Groovy"
+}
+ 
+welcome()
+
+Output:
+
+Plain Text
+Welcome to Groovy
+Exercise 7: Closure with Parameter
+Groovy
+def greet = { name ->
+println "Hello ${name}"
+}
+ 
+greet("Hyarel")
+`
+
+Output:
+
+Plain Text
+Hello Hyarel
+``
+Exercise 8: List + Closure
+Groovy
+def tools = [
+"Docker",
+"Kubernetes",
+"Terraform"
+]
+ 
+tools.each {
+println it
+}
+ 
+
+Output:
+
+Plain Text
+Docker
+Kubernetes
+Terraform
+Exercise 9: Try Catch
+Groovy
+try {
+def result = 10 / 0
+}
+catch(Exception e) {
+println "Error Occurred"
+}
+ 
+
+Output:
+
+Plain Text
+Error Occurred
+Exercise 10: Try Catch Finally
+Groovy
+try {
+ 
+println 10/0
+ 
+}
+catch(Exception e) {
+ 
+println "Exception Handled"
+ 
+}
+finally {
+ 
+println "Always Executes"
+ 
+}
+
+Output:
+
+Plain Text
+Exception Handled
+Always Executes
+Mini Project 1: Student File Manager
+Groovy
+def file = new File("student.txt")
+ 
+file.text = """
+Name: Hyarel
+City: Pune
+Course: Groovy
+"""
+ 
+println file.text
+
+Output:
+
+Plain Text
+Name: Hyarel
+City: Pune
+Course: Groovy
+Mini Project 2: DevOps Tool Inventory
+Groovy
+def tools = [
+"Docker",
+"Kubernetes",
+"Terraform",
+"Jenkins",
+"Ansible"
+]
+ 
+tools.each {
+println it
+}
+Mini Project 3: Log File Reader
+
+Create:
+
+Shell
+nano app.log
+
+Content:
+
+Plain Text
+INFO Application Started
+INFO Loading Config
+ERROR Database Failed
+
+Groovy:
+
+Groovy
+new File("app.log").eachLine {
+ 
+if(it.contains("ERROR")) {
+println it
+}
+ 
+}
+
+Output:
+
+Plain Text
+ERROR Database Failed
+Challenge Assignment
+
+Create employee.groovy
+
+Requirements:
+
+Create file employee.txt
+Store Name, City, Salary
+Read file content
+Print line by line
+Use Closure
+Add Try-Catch block
+
+Expected Output:
+
+Plain Text
+Employee Data Saved
+ 
+Name: Hyarel
+City: Pune
+Salary: 50000
+Real Jenkins Pipeline Connection
+
+A Jenkins pipeline uses closures extensively:
+
+Groovy
+pipeline {
+agent any
+ 
+stages {
+ 
+stage('Build') {
+steps {
+echo 'Building Application'
+}
+}
+ 
+stage('Deploy') {
+steps {
+echo 'Deploying Application'
+}
+}
+ 
+}
+}
+
+The { } blocks in Jenkins are Groovy closures.
+
+Level 3 Learning Goal
+
+After completing Level 3, you should be able to:
+
+Read and write files
+Handle errors
+Use closures
+Understand Jenkins pipeline syntax
+Process logs and text files
+
+👉 Next is Level 4: OOP (Classes, Objects, Constructors, Inheritance) and Jenkins Pipeline Development.
+
+Provide your feedback on BizChat
+You said:
