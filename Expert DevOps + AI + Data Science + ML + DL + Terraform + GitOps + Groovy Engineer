@@ -862,7 +862,26 @@ Swagger
 
 Plain Text
 http://localhost:8000/docs
+
+
+--------------------------------
+
+Test APIs
+Get Home
+Shell
+curl http://127.0.0.1:8000/
+Add Student
+Shell
+curl -X POST \
+"http://127.0.0.1:8000/students?name=Hyarel&department=Computer"
+View Students
+Shell
+curl http://127.0.0.1:8000/students
+
+
+---------------------------------
 Phase 8: Data Science Module
+======================================
 
 Create
 
