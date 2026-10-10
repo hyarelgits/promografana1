@@ -902,7 +902,141 @@ attendance,cgpa,placed
 Phase 9: ML Training
 
 ml/train.py
+-----------------------------
+checkthis before
+Install Required Packages
 
+First activate your virtual environment:
+
+Shell
+cd ~/ai-student-management
+source venv/bin/activate
+
+Install:
+
+Shell
+pip install pandas scikit-learn joblib
+
+Verify:
+
+Shell
+pip list | grep -E "pandas|scikit|joblib"
+
+Expected output similar to:
+
+Plain Text
+joblib
+pandas
+scikit-learn
+Check Dataset File
+
+Your code reads:
+
+Python
+df = pd.read_csv("students.csv")
+
+Make sure the file exists:
+
+Shell
+ls -l
+
+You should see:
+
+Plain Text
+students.csv
+train.py
+``
+Sample students.csv
+
+If it doesn't exist, create:
+
+Shell
+nano students.csv
+
+Paste:
+
+CSV
+attendance,cgpa,placed
+90,8.5,1
+85,7.8,1
+60,5.5,0
+95,9.1,1
+50,4.8,0
+80,7.0,1
+65,6.0,0
+92,8.9,1
+
+Save:
+
+Plain Text
+Ctrl+O
+Enter
+Ctrl+X
+ 
+Run Training
+Shell
+python3 train.py
+
+Expected:
+
+Plain Text
+model saved
+
+A new file will be created:
+
+Plain Text
+placement_model.pkl
+Verify Model Created
+Shell
+ls -l *.pkl
+
+Expected:
+
+Plain Text
+placement_model.pkl
+Next Create predict.py
+Python
+import joblib
+ 
+model = joblib.load("placement_model.pkl")
+ 
+result = model.predict([[85, 8.2]])
+ 
+print(result)
+
+Run:
+
+Shell
+python3 predict.py
+
+Output:
+
+Plain Text
+[1]
+
+Meaning:
+
+Plain Text
+1 = Placed
+0 = Not Placed
+Best Practice
+
+Create a requirements file:
+
+Shell
+pip freeze > requirements.txt
+
+Then in future:
+
+Shell
+pip install -r requirements.txt
+
+
+
+
+
+
+-----------------
 Python
 import pandas as pd
  
