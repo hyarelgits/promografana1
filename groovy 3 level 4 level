@@ -1,0 +1,352 @@
+Groovy Level 4 - OOP (Object-Oriented Programming)
+
+This level is very important because Jenkins Shared Libraries, Spring Boot, and many Java/Groovy projects use OOP concepts.
+
+Topics Covered
+
+✅ Class
+ ✅ Object
+ ✅ Constructor
+ ✅ Methods
+ ✅ Inheritance
+ ✅ Encapsulation
+ ✅ Static Methods
+
+Exercise 1: Create Your First Class
+
+File: student.groovy
+
+Groovy
+class Student {
+ 
+String name
+ 
+void display() {
+println "Student Name = ${name}"
+}
+}
+ 
+Student s = new Student()
+s.name = "Hyarel"
+ 
+s.display()
+Output
+Plain Text
+Student Name = Hyarel
+Exercise 2: Multiple Properties
+Groovy
+class Employee {
+ 
+String name
+String city
+String role
+ 
+void showDetails() {
+ 
+println "Name : ${name}"
+println "City : ${city}"
+println "Role : ${role}"
+}
+}
+ 
+Employee emp = new Employee()
+ 
+emp.name = "Hyarel"
+emp.city = "Pune"
+emp.role = "DevOps"
+ 
+emp.showDetails()
+Output
+Plain Text
+Name : Hyarel
+City : Pune
+Role : DevOps
+``
+Exercise 3: Constructor
+
+A constructor runs automatically when an object is created.
+
+Groovy
+class Employee {
+ 
+Employee() {
+ 
+println "Object Created"
+}
+}
+ 
+new Employee()
+Output
+Plain Text
+Object Created
+Exercise 4: Parameterized Constructor
+Groovy
+class Employee {
+ 
+String name
+ 
+Employee(String name) {
+this.name = name
+}
+ 
+void display() {
+println name
+}
+}
+ 
+Employee e = new Employee("Hyarel")
+ 
+e.display()
+Output
+Plain Text
+Hyarel
+Exercise 5: Calculator Class
+Groovy
+class Calculator {
+ 
+def add(a,b) {
+return a+b
+}
+ 
+def sub(a,b) {
+return a-b
+}
+}
+ 
+Calculator c = new Calculator()
+ 
+println c.add(10,20)
+println c.sub(20,10)
+Output
+Plain Text
+30
+10
+Exercise 6: Inheritance
+
+Parent Class
+
+Groovy
+class Person {
+ 
+void welcome() {
+println "Welcome User"
+}
+}
+ 
+class Employee extends Person {
+ 
+}
+ 
+Employee emp = new Employee()
+ 
+emp.welcome()
+Output
+Plain Text
+Welcome User
+Exercise 7: Method Overriding
+Groovy
+class Animal {
+ 
+void sound() {
+println "Generic Sound"
+}
+}
+ 
+class Dog extends Animal {
+ 
+void sound() {
+println "Bark"
+}
+}
+ 
+Dog d = new Dog()
+ 
+d.sound()
+Output
+Plain Text
+Bark
+Exercise 8: Encapsulation
+Groovy
+class Employee {
+ 
+private String name
+ 
+void setName(String name) {
+this.name = name
+}
+ 
+String getName() {
+return name
+}
+}
+ 
+Employee e = new Employee()
+ 
+e.setName("Hyarel")
+ 
+println e.getName()
+Output
+Plain Text
+Hyarel
+Exercise 9: Static Method
+Groovy
+class Utils {
+ 
+static void welcome() {
+println "Welcome to Groovy"
+}
+}
+ 
+Utils.welcome()
+Output
+Plain Text
+Welcome to Groovy
+Exercise 10: Static Variable
+Groovy
+class Counter {
+ 
+static int count = 0
+ 
+Counter() {
+count++
+}
+}
+ 
+new Counter()
+new Counter()
+new Counter()
+ 
+println Counter.count
+Output
+Plain Text
+3
+Mini Project 1: Employee Management
+Groovy
+class Employee {
+ 
+String name
+String role
+String city
+ 
+void display() {
+ 
+println "Name : ${name}"
+println "Role : ${role}"
+println "City : ${city}"
+}
+}
+ 
+Employee emp = new Employee()
+ 
+emp.name = "Hyarel"
+emp.role = "DevOps Engineer"
+emp.city = "Pune"
+ 
+emp.display()
+Mini Project 2: DevOps Tool Manager
+Groovy
+class Tool {
+ 
+String name
+ 
+void install() {
+println "${name} Installed"
+}
+}
+ 
+Tool t = new Tool(name:"Docker")
+ 
+t.install()
+Output
+Plain Text
+Docker Installed
+Mini Project 3: CI/CD Pipeline Simulation
+Groovy
+class Pipeline {
+ 
+void build() {
+println "Building Application"
+}
+ 
+void test() {
+println "Running Tests"
+}
+ 
+void deploy() {
+println "Deploying Application"
+}
+}
+ 
+Pipeline p = new Pipeline()
+ 
+p.build()
+p.test()
+p.deploy()
+Output
+Plain Text
+Building Application
+Running Tests
+Deploying Application
+Challenge Assignment
+
+Create:
+
+Plain Text
+company.groovy
+
+Requirements:
+
+Create Parent Class Person
+Create Child Class Employee
+Use Constructor
+Use Method Overriding
+Use Encapsulation
+Create Object
+Display Employee Details
+
+Expected Output:
+
+Plain Text
+Employee Created
+ 
+Name : Hyarel
+Department : DevOps
+City : Pune
+Jenkins Pipeline Example Using Groovy
+Groovy
+class Deployment {
+ 
+static deployApp(appName) {
+println "Deploying ${appName}"
+}
+}
+ 
+Deployment.deployApp("Nginx")
+
+Output:
+
+Plain Text
+Deploying Nginx
+Level 4 Summary
+
+You now know:
+
+Classes
+Objects
+Constructors
+Methods
+Inheritance
+Method Overriding
+Encapsulation
+Static Variables & Methods
+
+✅ Level 1 → Basics
+ ✅ Level 2 → Functions, Lists, Maps
+ ✅ Level 3 → Files, Closures, Exceptions
+ ✅ Level 4 → OOP
+
+Next, Level 5 is where Groovy becomes very useful for Jenkins Pipelines, Shared Libraries, DevOps Automation, JSON/XML Processing, REST API Calls, and Real CI/CD Projects. 🚀
+
+Provide your feedback on BizChat
+Start the Level 4 challengeExplain constructors with examplesBegin Level 5 Jenkins pipelines
+FilesFiles
