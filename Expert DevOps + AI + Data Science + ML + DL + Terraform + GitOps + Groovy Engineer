@@ -1008,7 +1008,104 @@ Run:
 
 Shell
 python3 predict.py
+------------------------
 
+use solution if any error come predict.py
+
+Good progress! ✅
+
+The message in your screenshot is:
+
+Plain Text
+UserWarning: X does not have valid feature names,
+but DecisionTreeClassifier was fitted with feature names
+
+This is a warning, not an error. Your model is likely still making predictions.
+
+Why it happens
+
+During training, you used:
+
+Python
+X = df[["attendance", "cgpa"]]
+
+The model learned with column names:
+
+Plain Text
+attendance
+cgpa
+
+But in predict.py, you're probably doing:
+
+Python
+result = model.predict([[85, 8.2]])
+
+This passes a plain list without column names, so scikit-learn shows a warning.
+
+Best Fix
+
+Update predict.py:
+
+Python
+import pandas as pd
+import joblib
+ 
+model = joblib.load("placement_model.pkl")
+ 
+data = pd.DataFrame({
+"attendance": [85],
+"cgpa": [8.2]
+})
+ 
+result = model.predict(data)
+ 
+print(result)
+
+Run:
+
+Shell
+python3 predict.py
+
+Expected:
+
+Plain Text
+[1]
+
+or
+
+Plain Text
+[0]
+
+No warning.
+
+Make Output Readable
+Python
+import pandas as pd
+import joblib
+ 
+model = joblib.load("placement_model.pkl")
+ 
+student = pd.DataFrame({
+"attendance": [85],
+"cgpa": [8.2]
+})
+ 
+prediction = model.predict(student)
+ 
+if prediction[0] == 1:
+print("Student will be placed")
+else:
+print("Student may not be placed")
+What You've Completed
+
+✅ Dataset (students.csv)
+ ✅ Pandas data loading
+ ✅ DecisionTree model training
+ ✅ Model saved (placement_model.pkl)
+ ✅ Model prediction
+---------------------------------
+
+---------------
 Output:
 
 Plain Text
