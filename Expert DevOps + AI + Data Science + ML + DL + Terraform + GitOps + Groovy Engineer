@@ -1253,7 +1253,88 @@ result=predict(attendance,cgpa)
 return {
 "placement":int(result[0])
 }
+-----------------------------------
+if not working then try belo cide in main.py
 
+from fastapi import FastAPI
+import pandas as pd
+import joblib
+
+app = FastAPI()
+
+model = joblib.load("ml/placement_model.pkl")
+
+@app.get("/")
+def home():
+    return {"message": "AI Student Management"}
+
+@app.get("/placement")
+def placement(attendance: int, cgpa: float):
+    data = pd.DataFrame({
+        "attendance": [attendance],
+        "cgpa": [cgpa]
+    })
+
+    prediction = model.predict(data)
+
+    return {
+        "prediction": int(prediction[0])
+    }
+
+---------------------
+
+still if not working then try below solution 
+
+Verify syntax
+
+Run:
+
+Shell
+python3 -m py_compile app/main.py
+
+If no output appears, the file is syntactically correct.
+
+Test import
+
+Run:
+
+Shell
+python3 -c "from app.main import app; print('OK')"
+
+Expected:
+
+Plain Text
+OK
+Start FastAPI
+Shell
+uvicorn app.main:app --reload
+Test API
+
+Browser:
+
+Plain Text
+http://127.0.0.1:8000/placement?attendance=90&cgpa=8.8
+
+or:
+
+Shell
+curl "http://127.0.0.1:8000/placement?attendance=90&cgpa=8.8"
+
+Expected:
+
+JSON
+{"prediction":1}
+
+If it still fails, run:
+
+Shell
+cat -n app/main.py
+
+and send the output. That will show the exact line numbers and remaining issue.
+
+Provide your feedback on BizChat
+You said:
+------------------------
 Test
 
 Plain Text
