@@ -1404,6 +1404,83 @@ sudo rm -rf /usr/share/ollama
 sudo rm -rf ~/.ollama
 sudo rm -rf /root/.ollama
 sudo userdel ollama 2>/dev/null
+-----------------
+
+still error resolved check below solution 
+
+I can see:
+
+Plain Text
+uvicorn app.main:app --reload
+...
+File "/usr/lib/python3/dist-packages/uvicorn/importer.py", line 24, in import_from_string
+raise exc from None
+
+The important line is below that, but it is not visible in the screenshot.
+
+Get the full error
+
+Run:
+
+Shell
+uvicorn app.main:app --reload > error.log 2>&1
+
+Then:
+
+Shell
+tail -50 error.log
+
+or
+
+Shell
+cat error.log
+Also test your app import directly
+
+From your project root:
+
+Shell
+source venv/bin/activate
+python3
+`
+
+Then:
+
+Python
+from app.main import app
+
+This will show the exact module or file causing the failure.
+
+Check if ollama Python package is installed
+Shell
+pip list | grep ollama
+
+If nothing is returned:
+
+Shell
+pip install ollama
+Verify your virtual environment
+Shell
+which python
+which pip
+
+Expected:
+
+Plain Text
+/root/ai-student-management/venv/bin/python
+/root/ai-student-management/venv/bin/pip
+Fastest way to diagnose
+
+Paste the output of:
+
+Shell
+tail -30 error.log
+
+or
+
+Shell
+python3 -c "from app.main import app"
+
+The current screenshot only shows the traceback leading to the error, not the actual exception at the bottom.
 
 
 
