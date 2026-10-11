@@ -1,0 +1,264 @@
+
+You said:
+image.png
+
+1 image
+Copilot said:
+The error is still the same because the code is still using the old path.
+
+From your screenshot:
+
+
+
+model = joblib.load("/root/ai-student-management/ml/placement_model.pkl")
+Inside Docker, this path does not exist.
+
+Fix the code
+Open:
+
+
+
+nano app/main.py
+Find:
+
+
+
+model = joblib.load("/root/ai-student-management/ml/placement_model.pkl")
+Replace with:
+
+
+
+model = joblib.load("ml/placement_model.pkl")
+Save:
+
+
+
+Ctrl + O
+Enter
+Ctrl + X
+Verify the change
+
+
+grep joblib.load app/main.py
+Expected:
+
+
+
+model = joblib.load("ml/placement_model.pkl")
+Verify model file exists
+
+
+find . -name placement_model.pkl
+Expected:
+
+
+
+./ml/placement_model.pkl
+Rebuild image
+
+
+docker rm test-student-app -f
+docker rmi student-app:v1 -f
+ 
+docker build --no-cache -t student-app:v1 .
+Run again
+
+
+docker run -d --name test-student-app -p 8001:8001 student-app:v1
+Check status
+
+
+docker ps
+If still failing:
+
+
+
+docker logs test-student-app
+Quick check
+Run these two commands now and share the output:
+
+
+
+grep joblib.load app/main.py
+
+
+find . -name placement_model.pkl
+I strongly suspect you rebuilt the image before changing main.py, so Docker is still using the old path /root/ai-student-management/ml/placement_model.pkl.
+
+
+
+
+
+You said:
+if my path change then model uvicorn nor reloading
+Copilot said:
+No. Changing the model path does not prevent Uvicorn from loading.
+
+Your current error is:
+
+
+
+model = joblib.load("/root/ai-student-management/ml/placement_model.pkl")
+Inside the Docker container:
+
+
+
+WORKDIR /app
+so Docker is looking for:
+
+
+
+/root/ai-student-management/ml/placement_model.pkl
+which does not exist.
+
+Using:
+
+
+
+model = joblib.load("ml/placement_model.pkl")
+simply tells Python to load the model from:
+
+
+
+/app/ml/placement_model.pkl
+which is the correct location if your project structure is:
+
+
+
+ai-student-management/
+├── app/
+│   └── main.py
+├── ml/
+│   └── placement_model.pkl
+├── requirements.txt
+└── Dockerfile
+First verify the file exists
+Run:
+
+
+
+find . -name placement_model.pkl
+Expected:
+
+
+
+./ml/placement_model.pkl
+If nothing is returned, the model file is missing and changing the path won't help.
+
+Better approach
+In app/main.py:
+
+
+
+import os
+import joblib
+ 
+model_path = os.path.join("ml", "placement_model.pkl")
+model = joblib.load(model_path)
+After changing the code
+You must rebuild the image:
+
+
+
+docker rm test-student-app -f
+docker rmi student-app:v1 -f
+ 
+docker build --no-cache -t student-app:v1 .
+Then run:
+
+
+
+docker run -d --name test-student-app -p 8001:8001 student-app:v1
+Check if file is really present
+Please run:
+
+
+
+find . -name placement_model.pkl
+and
+
+
+
+ls -l ml/
+If placement_model.pkl is not there, that's the real issue and we need to recreate the model file. If it is there, changing the path and rebuilding will fix the startup error.
+
+
+
+
+
+You said:
+so i need to change innside docker file 
+Copilot said:
+No, not in the Dockerfile.
+
+The problem is in your Python code (app/main.py), not the Dockerfile.
+
+Current code (wrong for Docker)
+
+
+model = joblib.load("/root/ai-student-management/ml/placement_model.pkl")
+This path exists on your Ubuntu VM, but inside the container there is no:
+
+
+
+/root/ai-student-management/
+Change in app/main.py
+
+
+model = joblib.load("ml/placement_model.pkl")
+or
+
+
+
+import os
+ 
+model_path = os.path.join("ml", "placement_model.pkl")
+model = joblib.load(model_path)
+Dockerfile should remain like this
+
+
+FROM python:3.12
+ 
+WORKDIR /app
+ 
+COPY requirements.txt .
+ 
+RUN pip install --no-cache-dir -r requirements.txt
+ 
+COPY . .
+ 
+EXPOSE 8001
+ 
+CMD ["uvicorn","app.main:app","--host","0.0.0.0","--port","8001"]
+Then rebuild
+
+
+docker rm test-student-app -f
+docker rmi student-app:v1 -f
+ 
+docker build --no-cache -t student-app:v1 .
+Important check first
+Run:
+
+
+
+find . -name placement_model.pkl
+If it returns:
+
+
+
+./ml/placement_model.pkl
+then changing main.py and rebuilding should fix the error.
+
+If it returns nothing, the model file is missing and we need to recreate it.
+
+
+
+
+
+
+Update app/main.py, not Dockerfile
+
+Verify the model file is copied
+
+Rebuild and run the container
