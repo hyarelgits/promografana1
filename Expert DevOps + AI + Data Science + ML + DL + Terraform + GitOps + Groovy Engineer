@@ -1980,7 +1980,39 @@ ports:
 targetPort: 8000
  
 type: NodePort
+=================================
+replace code deployment.yml
 
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: student-app
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: student-app
+
+  template:
+    metadata:
+      labels:
+        app: student-app
+
+    spec:
+      containers:
+        - name: student-app
+          image: student-app:v1
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8000
+
+
+
+=======================
 Deploy
 
 Shell
