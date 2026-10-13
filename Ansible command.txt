@@ -1,5 +1,5 @@
 How to Install Ansible on Ubuntu 24.04 Step-by-Step
-
+azuser8442_mml.local@karthikirisoutlook.onmicrosoft.com
 echo "sysops ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/sysops
 
 $ sudo apt update
