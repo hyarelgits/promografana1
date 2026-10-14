@@ -272,7 +272,7 @@ Download agent (check latest version in Azure DevOps page, example below):
 wget https://vstsagentpackage.azureedge.net/agent/4.263.0/vsts-agent-linux-x64-4.263.0.tar.gz
 Extract:
 
-
+curl -L -o agent.tar.gz https://download.agent.dev.azure.com/agent/4.263.0/vsts-agent-linux-x64-4.263.0.tar.gz
 
 tar zxvf vsts-agent-linux-x64-4.263.0.tar.gz
 Step 5: Configure Agent
