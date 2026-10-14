@@ -1,0 +1,408 @@
+
+You said:
+image.png
+Copilot said:
+Your Tomcat is working inside the VM because curl http://172.16.0.4:8080 returned the Tomcat page.
+
+So the issue is Azure networking/firewall.
+
+Run these commands on Ubuntu VM
+Check if Tomcat listens on all IPs:
+
+
+
+sudo ss -tulpn | grep 8080
+You should see something like:
+
+
+
+0.0.0.0:8080
+or
+
+
+
+*:8080
+If you see:
+
+
+
+127.0.0.1:8080
+then Tomcat is only listening locally.
+
+Check Azure NSG Rule
+Azure Portal:
+
+
+
+Ubuntu1
+→ Networking
+→ Inbound port rules
+Verify there is a rule:
+
+
+
+Source        : Any
+Protocol      : TCP
+Destination   : 8080
+Action        : Allow
+Priority      : 100
+If not:
+
+
+
+Add inbound port rule
+Port = 8080
+Allow
+Check Ubuntu Firewall
+Run:
+
+
+
+sudo ufw status
+If active:
+
+
+
+sudo ufw allow 8080/tcp
+sudo ufw reload
+Test from Public IP inside VM
+Run:
+
+
+
+curl http://20.81.45.96:8080
+If this fails but localhost works, it's a network binding issue.
+
+Most Important
+Please paste the outputs of:
+
+
+
+sudo ss -tulpn | grep 8080
+
+
+sudo ufw status
+I can then tell you exactly whether the problem is:
+
+Azure NSG (most likely)
+Ubuntu firewall
+Tomcat binding to localhost only
+Public IP routing issue
+Your screenshots already confirm Tomcat itself is installed and running correctly.
+
+
+
+
+
+You said:
+image.png
+Copilot said:
+Perfect! Your screenshot shows:
+
+
+
+tcp LISTEN 0 100 *:8080 *:* users:(("java",pid=6223,...))
+✅ Tomcat is running
+✅ Tomcat is listening on all interfaces (*:8080)
+✅ Java/Tomcat process is active
+
+This means the issue is 100% Azure Network Security Group (NSG) or VM firewall.
+
+Check Ubuntu Firewall
+Run:
+
+
+
+sudo ufw status
+If Active, run:
+
+
+
+sudo ufw allow 8080/tcp
+sudo ufw reload
+Check Azure Networking
+Azure Portal:
+
+
+
+Ubuntu1
+→ Networking
+Look under Inbound port rules.
+
+You must see something like:
+
+
+
+Priority : 100
+Source   : Any
+Protocol : TCP
+Port     : 8080
+Action   : Allow
+If you don't see 8080:
+
+Click Add inbound port rule
+Fill:
+
+
+Source              : Any
+Source port ranges  : *
+Destination         : Any
+Service             : Custom
+Destination Port    : 8080
+Protocol            : TCP
+Action              : Allow
+Priority            : 100
+Name                : Allow-8080
+Click Add
+Wait 1-2 minutes.
+
+Verify Public IP
+Run:
+
+
+
+curl ifconfig.me
+or check:
+
+
+
+VM → Overview → Public IP Address
+Use:
+
+
+
+http://20.81.45.96:8080
+Quick Test
+From your PC:
+
+
+
+telnet 20.81.45.96 8080
+or PowerShell:
+
+
+
+Test-NetConnection 20.81.45.96 -Port 8080
+If it says:
+
+
+
+TcpTestSucceeded : False
+then Azure NSG is still blocking the port.
+
+Please send a screenshot of:
+
+
+
+Azure Portal
+→ Ubuntu1
+→ Networking
+→ Inbound port rules
+That screen will immediately show why port 8080 is inaccessible.
+
+
+
+
+
+You said:
+UBUNTU VM TO ADD IN DEPLOYMENT GROUP STEPS
+Copilot said:
+To add an Ubuntu VM to an Azure DevOps Deployment Group, follow these steps.
+
+Step 1: Create Deployment Group
+In Azure DevOps:
+
+
+
+Pipelines
+→ Deployment groups
+→ New
+Enter:
+
+
+
+Deployment Group Name : Ubuntu-Tomcat-DG
+Description           : Ubuntu Tomcat Server
+Click:
+
+
+
+Create
+Azure DevOps will show a Linux registration script.
+
+Step 2: Create PAT Token
+Azure DevOps:
+
+
+
+Top Right Profile
+→ Personal Access Tokens
+→ New Token
+Select:
+
+
+
+Scopes:
+Deployment Groups (Read, Manage)
+Agent Pools (Read, Manage)
+Create and copy the PAT token.
+
+Step 3: Connect to Ubuntu VM
+SSH to VM:
+
+
+
+ssh azureuser@20.81.45.96
+Become root:
+
+
+
+sudo su -
+Step 4: Install Deployment Group Agent
+Create folder:
+
+
+
+mkdir /azagent
+cd /azagent
+Download agent (check latest version in Azure DevOps page, example below):
+
+
+
+wget https://vstsagentpackage.azureedge.net/agent/4.263.0/vsts-agent-linux-x64-4.263.0.tar.gz
+Extract:
+
+
+
+tar zxvf vsts-agent-linux-x64-4.263.0.tar.gz
+Step 5: Configure Agent
+Run:
+
+
+
+./config.sh
+Provide:
+
+
+
+Server URL:
+https://dev.azure.com/<your-org>
+ 
+Authentication Type:
+PAT
+ 
+PAT:
+<Paste Token>
+ 
+Deployment Group:
+Ubuntu-Tomcat-DG
+ 
+Agent Name:
+Tomcat-Ubuntu-Agent
+Select:
+
+
+
+Y
+when asked to configure as deployment group agent.
+
+Step 6: Install Service
+
+
+sudo ./svc.sh install
+sudo ./svc.sh start
+Check status:
+
+
+
+sudo ./svc.sh status
+Expected:
+
+
+
+Service is running
+Step 7: Verify in Azure DevOps
+Go to:
+
+
+
+Pipelines
+→ Deployment Groups
+→ Ubuntu-Tomcat-DG
+You should see:
+
+
+
+Tomcat-Ubuntu-Agent
+Online
+Healthy
+Step 8: Create Release Pipeline
+Add stage:
+
+
+
+Deploy to Ubuntu
+Select Deployment Group:
+
+
+
+Ubuntu-Tomcat-DG
+Step 9: Deploy WAR to Tomcat
+Add Bash task:
+
+
+
+sudo cp $(System.DefaultWorkingDirectory)/**/*.war /var/lib/tomcat10/webapps/
+ 
+sudo systemctl restart tomcat10
+Or if your path is:
+
+
+
+/opt/tomcat/webapps
+then use:
+
+
+
+sudo cp $(System.DefaultWorkingDirectory)/**/*.war /opt/tomcat/webapps/
+ 
+sudo systemctl restart tomcat10
+Complete Flow
+
+
+Azure Repo
+    |
+    v
+Build Pipeline
+(mvn clean package)
+    |
+    v
+WAR Artifact
+    |
+    v
+Release Pipeline
+    |
+    v
+Deployment Group
+(Ubuntu VM)
+    |
+    v
+/var/lib/tomcat10/webapps
+    |
+    v
+Tomcat Restart
+    |
+    v
+Application Live
+Since you've already installed Tomcat on Ubuntu, after the Deployment Group agent is online, your WAR deployment can be fully automated from Azure DevOps.
+
+
+
+
+
+
+Create the YAML deployment pipeline
+
+Fix deployment agent errors
+
+Deploy a WAR to Tomcat
